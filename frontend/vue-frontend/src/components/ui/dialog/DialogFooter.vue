@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
+  <div class="flex justify-end gap-3">
     <slot />
   </div>
 </template>

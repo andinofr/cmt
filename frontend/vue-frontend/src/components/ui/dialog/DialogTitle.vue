@@ -1,5 +1,5 @@
 <template>
-  <h2 :class="cn('text-lg font-semibold text-slate-900', className)">
+  <h2 :class="cn('font-semibold text-slate-900', className)">
     <slot />
   </h2>
 </template>

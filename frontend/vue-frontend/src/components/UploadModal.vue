@@ -1,8 +1,8 @@
 <template>
   <Dialog :open="open" @update:open="$emit('close')">
-    <DialogContent className="max-w-2xl">
+    <DialogContent class="max-w-2xl">
       <DialogHeader>
-        <DialogTitle className="text-2xl font-semibold">Upload Document</DialogTitle>
+        <DialogTitle class="text-2xl font-semibold">Upload Document</DialogTitle>
       </DialogHeader>
 
       <div class="space-y-6 py-4">
@@ -57,41 +57,26 @@
         <!-- Area Select -->
         <div>
           <Label class="mb-2 block">Area *</Label>
-          <Select v-model="area">
-            <SelectTrigger>
-              <SelectValue placeholder="Select area" :model-value="area" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="a in AREAS" :key="a" :value="a">{{ a }}</SelectItem>
-            </SelectContent>
+          <Select v-model="area" placeholder="Select area">
+            <SelectItem v-for="a in AREAS" :key="a" :value="a">{{ a }}</SelectItem>
           </Select>
         </div>
 
         <!-- Contract Select (Optional) -->
         <div v-if="workspace === 'execution'">
           <Label class="mb-2 block">Related Contract (Optional)</Label>
-          <Select v-model="contract">
-            <SelectTrigger>
-              <SelectValue placeholder="Select contract" :model-value="contract" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="c in CONTRACTS.filter((c) => !area || c.area === area)" :key="c.id" :value="c.id">
-                {{ c.id }} - {{ c.title }}
-              </SelectItem>
-            </SelectContent>
+          <Select v-model="contract" placeholder="Select contract">
+            <SelectItem v-for="c in CONTRACTS.filter((c) => !area || c.area === area)" :key="c.id" :value="c.id">
+              {{ c.id }} - {{ c.title }}
+            </SelectItem>
           </Select>
         </div>
 
         <!-- Category Select -->
         <div>
           <Label class="mb-2 block">Document Category *</Label>
-          <Select v-model="category">
-            <SelectTrigger>
-              <SelectValue placeholder="Select category" :model-value="category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="cat in DOCUMENT_CATEGORIES" :key="cat" :value="cat">{{ cat }}</SelectItem>
-            </SelectContent>
+          <Select v-model="category" placeholder="Select category">
+            <SelectItem v-for="cat in DOCUMENT_CATEGORIES" :key="cat" :value="cat">{{ cat }}</SelectItem>
           </Select>
         </div>
 
