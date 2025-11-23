@@ -89,11 +89,23 @@
                     <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                       <FileText class="w-6 h-6 text-white" />
                     </div>
-                    <div>
+                    <div class="flex-1">
                       <p class="font-medium text-slate-800">
                         {{ template.code }} Cost Structure of {{ template.category }}
                       </p>
-                      <p class="text-sm text-slate-600">{{ template.workName }}</p>
+                      <p class="text-sm text-slate-600">{{ template.category }} | {{ template.workName }}</p>
+                      <p class="text-xs text-slate-500 mt-1">
+                        Uploaded:
+                        {{
+                          new Date(template.uploadDate).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        }}
+                      </p>
                     </div>
                   </div>
                   <Button
@@ -109,7 +121,7 @@
           </Card>
 
           <!-- Work Package - Scope of Works -->
-          <Card class="shadow-lg border-0">
+          <Card class="shadow-lg border-0 mb-4">
             <CardContent class="p-8">
               <h3 class="text-2xl font-semibold text-slate-800 mb-6">Work Package Scope of Works</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -121,9 +133,22 @@
                     <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                       <FileText class="w-6 h-6 text-white" />
                     </div>
-                    <div>
+                    <div class="flex-1">
                       <p class="font-medium text-slate-800">
                         {{ template.code }} Reference Scope of Works of {{ template.category }}
+                      </p>
+                      <p class="text-sm text-slate-600">{{ template.category }}</p>
+                      <p class="text-xs text-slate-500 mt-1">
+                        Uploaded:
+                        {{
+                          new Date(template.uploadDate).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        }}
                       </p>
                     </div>
                   </div>
@@ -135,6 +160,59 @@
                     <Download class="w-4 h-4" />
                   </Button>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <!-- Work Package Library -->
+          <Card class="shadow-lg border-0">
+            <CardContent class="p-8">
+              <h3 class="text-2xl font-semibold text-slate-800 mb-6">Work Package Library</h3>
+              <p class="text-slate-600 mb-4">Archived versions of work package documents</p>
+
+              <div v-if="WORK_PACKAGE_LIBRARY.length > 0" class="space-y-4">
+                <div
+                  v-for="template in WORK_PACKAGE_LIBRARY"
+                  :key="template.id"
+                  class="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
+                      <FileText class="w-6 h-6 text-white" />
+                    </div>
+                    <div class="flex-1">
+                      <p class="font-medium text-slate-800">
+                        {{ template.code }} {{ template.workName ? template.workName : template.category }} (Archive)
+                      </p>
+                      <p class="text-sm text-slate-600">
+                        Category: {{ template.category }} | {{ template.workName || "Reference Document" }}
+                      </p>
+                      <p class="text-xs text-slate-500 mt-1">
+                        Uploaded:
+                        {{
+                          new Date(template.uploadDate).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    @click="handleDownload(template.fileName)"
+                    class="hover:bg-gray-200">
+                    <Download class="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <div v-else class="text-center py-8">
+                <Folder class="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                <p class="text-slate-500">No archived documents in library</p>
               </div>
             </CardContent>
           </Card>
@@ -312,6 +390,7 @@ import UploadModal from "@/components/UploadModal.vue";
 import { Building2, Bell, User, LogOut, Home, Download, FileText, Folder, Upload as UploadIcon } from "lucide-vue-next";
 import {
   CONTRACT_TEMPLATES,
+  WORK_PACKAGE_LIBRARY,
   AREAS,
   getDocumentsFromStorage,
   approveDocument,

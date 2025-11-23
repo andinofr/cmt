@@ -17,6 +17,7 @@ export interface ContractTemplate {
   category: string
   workName?: string
   fileName: string
+  uploadDate: string
 }
 
 export interface Document {
@@ -143,68 +144,127 @@ export const CONTRACTS: Contract[] = [
 
 export const CONTRACT_TEMPLATES = {
   pricingCatalogue: [
+    // Latest versions
     {
       id: 'CP003-001',
       code: 'CP-003',
       category: 'Mining',
       workName: 'Heavy Equipment Rental',
-      fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment.pdf'
+      fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment.pdf',
+      uploadDate: '2024-02-20T10:00:00Z'
     },
     {
       id: 'CP003-002',
       code: 'CP-003',
       category: 'Construction',
       workName: 'Infrastructure Development',
-      fileName: 'CP-003_Cost_Structure_Construction_Infrastructure.pdf'
+      fileName: 'CP-003_Cost_Structure_Construction_Infrastructure.pdf',
+      uploadDate: '2024-02-22T14:30:00Z'
     },
     {
       id: 'CP003-003',
       code: 'CP-003',
       category: 'Transportation',
       workName: 'Material Logistics',
-      fileName: 'CP-003_Cost_Structure_Transportation_Logistics.pdf'
+      fileName: 'CP-003_Cost_Structure_Transportation_Logistics.pdf',
+      uploadDate: '2024-02-18T09:15:00Z'
     },
     {
       id: 'CP003-004',
       code: 'CP-003',
       category: 'Engineering',
       workName: 'Consultancy Services',
-      fileName: 'CP-003_Cost_Structure_Engineering_Consultancy.pdf'
+      fileName: 'CP-003_Cost_Structure_Engineering_Consultancy.pdf',
+      uploadDate: '2024-02-25T11:45:00Z'
     }
   ],
   scopeOfWorks: [
+    // Latest versions
     {
       id: 'CP002-001',
       code: 'CP-002',
       category: 'Consultancy',
-      fileName: 'CP-002_Reference_Scope_Consultancy.pdf'
+      fileName: 'CP-002_Reference_Scope_Consultancy.pdf',
+      uploadDate: '2024-02-21T13:00:00Z'
     },
     {
       id: 'CP002-002',
       code: 'CP-002',
       category: 'Study',
-      fileName: 'CP-002_Reference_Scope_Study.pdf'
+      fileName: 'CP-002_Reference_Scope_Study.pdf',
+      uploadDate: '2024-02-19T16:20:00Z'
     },
     {
       id: 'CP002-003',
       code: 'CP-002',
       category: 'Mining and Earth Work',
-      fileName: 'CP-002_Reference_Scope_Mining_Earth_Work.pdf'
+      fileName: 'CP-002_Reference_Scope_Mining_Earth_Work.pdf',
+      uploadDate: '2024-02-24T08:45:00Z'
     },
     {
       id: 'CP002-004',
       code: 'CP-002',
       category: 'Construction Work',
-      fileName: 'CP-002_Reference_Scope_Construction.pdf'
+      fileName: 'CP-002_Reference_Scope_Construction.pdf',
+      uploadDate: '2024-02-17T12:10:00Z'
     },
     {
       id: 'CP002-005',
       code: 'CP-002',
       category: 'Medium Term Services',
-      fileName: 'CP-002_Reference_Scope_Medium_Term.pdf'
+      fileName: 'CP-002_Reference_Scope_Medium_Term.pdf',
+      uploadDate: '2024-02-23T15:30:00Z'
     }
   ]
 } as const
+
+// Library of older documents (archived)
+export const WORK_PACKAGE_LIBRARY = [
+  // Old CP-003 versions
+  {
+    id: 'CP003-001-V1',
+    code: 'CP-003',
+    category: 'Mining',
+    workName: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_V1.pdf',
+    uploadDate: '2023-12-15T10:00:00Z',
+    isLatest: false
+  },
+  {
+    id: 'CP003-002-V1',
+    code: 'CP-003',
+    category: 'Construction',
+    workName: 'Infrastructure Development',
+    fileName: 'CP-003_Cost_Structure_Construction_Infrastructure_V1.pdf',
+    uploadDate: '2024-01-10T14:30:00Z',
+    isLatest: false
+  },
+  // Old CP-002 versions
+  {
+    id: 'CP002-001-V1',
+    code: 'CP-002',
+    category: 'Consultancy',
+    fileName: 'CP-002_Reference_Scope_Consultancy_V1.pdf',
+    uploadDate: '2023-11-20T13:00:00Z',
+    isLatest: false
+  },
+  {
+    id: 'CP002-002-V1',
+    code: 'CP-002',
+    category: 'Study',
+    fileName: 'CP-002_Reference_Scope_Study_V1.pdf',
+    uploadDate: '2024-01-05T16:20:00Z',
+    isLatest: false
+  },
+  {
+    id: 'CP002-004-V1',
+    code: 'CP-002',
+    category: 'Construction Work',
+    fileName: 'CP-002_Reference_Scope_Construction_V1.pdf',
+    uploadDate: '2023-10-12T12:10:00Z',
+    isLatest: false
+  }
+]
 
 export const DOCUMENT_CATEGORIES = [
   'Cost Structure',
