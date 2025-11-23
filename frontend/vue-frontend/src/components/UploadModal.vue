@@ -54,6 +54,18 @@
           <Input id="link-url" type="url" placeholder="https://example.com/document" v-model="linkUrl" />
         </div>
 
+        <!-- File Type -->
+        <div>
+          <Label for="file_type" class="mb-2 block">File Type :</Label>
+          <Input id="file_type" placeholder="Enter document file type" v-model="filetype" :rows="3" />
+        </div>
+
+        <!-- Description -->
+        <div>
+          <Label for="file_naming" class="mb-2 block">File Naming :</Label>
+          <Input id="file_naming" placeholder="Enter document file name" v-model="filenaming" :rows="3" />
+        </div>
+
         <!-- Area Select
         <div>
           <Label class="mb-2 block">Area *</Label>
@@ -155,6 +167,8 @@ const area = ref(props.preSelectedArea);
 const contract = ref("");
 const category = ref("");
 const description = ref("");
+const filetype = ref("");
+const filenaming = ref("");
 const fileName = ref("");
 const linkUrl = ref("");
 
