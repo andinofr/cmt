@@ -255,7 +255,16 @@
                         <div class="flex items-start justify-between">
                           <div class="flex-1">
                             <p class="font-medium text-slate-800 mb-1">
-                              {{ doc.fileName || doc.linkUrl }}
+                              <a
+                                v-if="doc.linkUrl"
+                                :href="doc.linkUrl"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer">
+                                {{ doc.linkUrl }}
+                                <span class="text-xs ml-1">🔗</span>
+                              </a>
+                              <span v-else>{{ doc.fileName }}</span>
                             </p>
                             <p class="text-sm text-slate-600 mb-2">{{ doc.description }}</p>
                             <div class="flex gap-2 flex-wrap">
@@ -322,7 +331,16 @@
                     </div>
 
                     <p class="font-medium text-slate-800 mb-1">
-                      {{ doc.fileName || doc.linkUrl }}
+                      <a
+                        v-if="doc.linkUrl"
+                        :href="doc.linkUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer">
+                        {{ doc.linkUrl }}
+                        <span class="text-xs ml-1">🔗</span>
+                      </a>
+                      <span v-else>{{ doc.fileName }}</span>
                     </p>
                     <p class="text-sm text-slate-600 mb-3">{{ doc.description }}</p>
 

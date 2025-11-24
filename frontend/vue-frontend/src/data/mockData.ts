@@ -297,6 +297,13 @@ export const getContractExpiryStatus = (endDate: string): 'normal' | 'warning' |
 // Helper function to get documents from localStorage
 export const getDocumentsFromStorage = (): Document[] => {
   if (typeof window === 'undefined') return []
+
+  // Force refresh if needed (for testing)
+  if (shouldRefreshSampleData()) {
+    console.log('Force refreshing sample data with link documents...')
+    return refreshDocumentsFromSample()
+  }
+
   const docs = localStorage.getItem('cmt_documents')
 
   // Return sample documents if no saved documents exist
@@ -361,11 +368,11 @@ const getSampleDocuments = (): Document[] => [
   },
   {
     id: 'DOC-003',
-    linkUrl: 'https://example.com/monthly-report',
+    linkUrl: 'https://example.com/monthly-compliance-report',
     description: 'Monthly compliance report for environmental regulations',
     category: 'Compliance Report',
     area: 'Bahodopi',
-    workspace: 'execution',
+    workspace: 'planning',
     uploadDate: '2024-01-25T09:00:00Z',
     status: 'approved',
     reviewedBy: 'CMT Manager',
@@ -502,6 +509,78 @@ const getSampleDocuments = (): Document[] => [
       reportedDate: '2024-02-16',
       reportedBy: 'Tom Wilson - QA Engineer'
     }
+  },
+  {
+    id: 'DOC-011',
+    linkUrl: 'https://docs.google.com/document/d/abc123-xyz789',
+    description: 'Technical specifications for mining machinery installation',
+    category: 'Technical Specification',
+    area: 'Sorowako',
+    workspace: 'planning',
+    uploadDate: '2024-02-28T16:30:00Z',
+    status: 'pending_review',
+    metadata: {
+      specificationNumber: 'TS-2024-011',
+      equipmentType: 'Mining Equipment',
+      version: '3.0',
+      issueDate: '2024-02-28',
+      technicalOwner: 'Engineering Department'
+    }
+  },
+  {
+    id: 'DOC-012',
+    linkUrl: 'https://company-portal.com/policies/hr-policy-2024',
+    description: 'Updated HR policies and procedures for 2024',
+    category: 'Administration Document',
+    area: 'Morowali',
+    workspace: 'planning',
+    uploadDate: '2024-03-01T10:15:00Z',
+    status: 'approved',
+    reviewedBy: 'HR Director',
+    reviewedDate: '2024-03-02T09:00:00Z',
+    metadata: {
+      documentType: 'Policy',
+      effectiveDate: '2024-03-01',
+      department: 'Human Resources',
+      approvedBy: 'HR Director',
+      reviewFrequency: 'Annually'
+    }
+  },
+  {
+    id: 'DOC-013',
+    linkUrl: 'https://project-management.com/timeline/phase-3',
+    description: 'Project timeline and milestones for construction phase',
+    category: 'Minutes of Meeting',
+    area: 'Bahodopi',
+    workspace: 'planning',
+    uploadDate: '2024-03-05T14:45:00Z',
+    status: 'pending_review',
+    metadata: {
+      meetingDate: '2024-03-05',
+      meetingType: 'Project Planning',
+      attendees: 15,
+      facilitator: 'Sarah Chen - Project Manager',
+      location: 'Project Management Office'
+    }
+  },
+  {
+    id: 'DOC-014',
+    linkUrl: 'https://external-contractor.com/safety-protocols',
+    description: 'External contractor safety protocols and procedures',
+    category: 'Safety Procedures',
+    area: 'Sorowako',
+    workspace: 'planning',
+    uploadDate: '2024-03-10T11:20:00Z',
+    status: 'approved',
+    reviewedBy: 'Safety Manager',
+    reviewedDate: '2024-03-11T08:30:00Z',
+    metadata: {
+      procedureNumber: 'SP-2024-014',
+      procedureType: 'External Contractor Protocol',
+      riskLevel: 'Medium Risk',
+      effectiveDate: '2024-03-10',
+      reviewDate: '2024-09-10'
+    }
   }
 ]
 
@@ -537,6 +616,19 @@ const addSampleMetadata = (doc: Document): Document => {
 export const saveDocumentsToStorage = (documents: Document[]): void => {
   if (typeof window === 'undefined') return
   localStorage.setItem('cmt_documents', JSON.stringify(documents))
+}
+
+// Helper function to clear localStorage and load fresh sample data
+export const refreshDocumentsFromSample = (): Document[] => {
+  if (typeof window === 'undefined') return []
+  localStorage.removeItem('cmt_documents')
+  return getSampleDocuments()
+}
+
+// Helper function to check if we need to refresh data (for testing)
+export const shouldRefreshSampleData = (): boolean => {
+  // This function can be called to force refresh sample data for testing
+  return true // Set to true if you want to force refresh
 }
 
 // Helper function to add a document
