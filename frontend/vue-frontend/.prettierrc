@@ -1,7 +1,0 @@
-{
-    "semi": true,
-    "bracketSameLine": true,
-    "printWidth": 120,
-    "htmlWhitespaceSensitivity": "ignore",
-    "vueIndentScriptAndStyle": false
-}
