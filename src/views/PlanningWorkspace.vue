@@ -222,10 +222,6 @@
         <TabsContent value="document" className="space-y-6">
           <!-- Area Tabs -->
           <div class="bg-white rounded-lg shadow-lg p-6">
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-semibold text-slate-800">Planning Documents</h3>
-            </div>
-
             <Tabs v-model="selectedArea">
               <TabsList className="w-full justify-start bg-slate-100 p-1 flex-wrap">
                 <TabsTrigger
