@@ -133,7 +133,13 @@ const workspaces: Workspace[] = [
 const availableWorkspaces = computed(() => {
   return workspaces.filter((workspace) => {
     if (workspace.id === "central-hub") {
-      return authStore.isCMTTeam;
+      return (
+        authStore.isCMTAnalyst ||
+        authStore.isCMTSPV ||
+        authStore.isCMTAdmin ||
+        authStore.isCMTSenior ||
+        authStore.isSYSAdmin
+      );
     }
     return true;
   });

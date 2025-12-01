@@ -17,72 +17,145 @@
     <div class="flex-1 flex items-center justify-center p-8">
       <Card class="w-full max-w-2xl shadow-xl border-0">
         <CardContent class="p-12">
-          <div class="text-center mb-10">
-            <h2 class="text-4xl font-light text-slate-800 mb-2">Sign In</h2>
-            <p class="text-slate-500">Select your role to access the portal</p>
+          <div class="text-center mb-6">
+            <h2 class="text-2xl font-semibold text-slate-800 mb-2">Sign In</h2>
+            <p class="text-slate-500 mb-6">Choose your authentication method</p>
           </div>
 
-          <!-- Name Input -->
-          <div class="mb-8">
-            <Label for="name" className="text-base mb-2 block">Your Name {{ name }}</Label>
-            <Input id="name" type="text" placeholder="Enter your name" v-model="name" class="h-12 text-base" />
+          <!-- Authentication Method Tabs -->
+          <div class="flex space-x-1 mb-8 bg-slate-100 p-1 rounded-lg overflow-hidden">
+            <button
+              @click="selectedAuthMethod = 'application'"
+              :class="`flex-1 py-3 px-2 sm:px-4 rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                selectedAuthMethod === 'application'
+                  ? 'bg-white text-[#007d79] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
+              }`">
+              <Shield class="w-4 h-4 flex-shrink-0" />
+              <span class="hidden sm:inline">Application Login</span>
+            </button>
+            <button
+              @click="selectedAuthMethod = 'frontgate'"
+              :class="`flex-1 py-3 px-2 sm:px-4 rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                selectedAuthMethod === 'frontgate'
+                  ? 'bg-white text-[#007d79] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
+              }`">
+              <Key class="w-4 h-4 flex-shrink-0" />
+              <span class="hidden sm:inline">Frontgate Login</span>
+            </button>
+            <button
+              @click="selectedAuthMethod = 'windows'"
+              :class="`flex-1 py-3 px-2 sm:px-4 rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                selectedAuthMethod === 'windows'
+                  ? 'bg-white text-[#007d79] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'
+              }`">
+              <Monitor class="w-4 h-4 flex-shrink-0" />
+              <span class="hidden sm:inline">Windows Auth</span>
+            </button>
           </div>
 
-          <!-- Role Selection -->
-          <div class="mb-10">
-            <Label className="text-base mb-4 block">Select Role</Label>
-            <div class="grid grid-cols-2 gap-6">
+          <!-- Application Login Form -->
+          <div v-if="selectedAuthMethod === 'application'" class="space-y-6">
+            <div class="space-y-4">
+              <div>
+                <Label for="app-username" className="text-base mb-2 block">Username</Label>
+                <Input
+                  id="app-username"
+                  type="text"
+                  placeholder="Enter username"
+                  v-model="appLogin.username"
+                  class="h-12 text-base" />
+              </div>
+              <div>
+                <Label for="app-password" className="text-base mb-2 block">Password</Label>
+                <Input
+                  id="app-password"
+                  type="password"
+                  placeholder="Enter password"
+                  v-model="appLogin.password"
+                  class="h-12 text-base" />
+              </div>
+            </div>
+
+            <Button
+              @click="handleApplicationLogin"
+              :disabled="!appLogin.username.trim() || !appLogin.password.trim()"
+              className="w-full h-14 text-lg bg-[#007d79] hover:bg-[#006663] transition-colors">
+              Sign In with Application Account
+            </Button>
+          </div>
+
+          <!-- Frontgate Login Form -->
+          <div v-if="selectedAuthMethod === 'frontgate'" class="space-y-6">
+            <div class="space-y-4">
+              <div>
+                <Label for="frontgate-username" className="text-base mb-2 block">Username</Label>
+                <Input
+                  id="frontgate-username"
+                  type="text"
+                  placeholder="Enter username"
+                  v-model="frontgateLogin.username"
+                  class="h-12 text-base" />
+              </div>
+              <div>
+                <Label for="frontgate-password" className="text-base mb-2 block">Password</Label>
+                <Input
+                  id="frontgate-password"
+                  type="password"
+                  placeholder="Enter password"
+                  v-model="frontgateLogin.password"
+                  class="h-12 text-base" />
+              </div>
+            </div>
+
+            <Button
+              @click="handleFrontgateLogin"
+              :disabled="!frontgateLogin.username.trim() || !frontgateLogin.password.trim()"
+              className="w-full h-14 text-lg bg-[#007d79] hover:bg-[#006663] transition-colors">
+              Sign In with Frontgate Account
+            </Button>
+          </div>
+
+          <!-- Windows Authentication -->
+          <div v-if="selectedAuthMethod === 'windows'" class="space-y-6">
+            <div class="text-center">
+              <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Monitor class="w-10 h-10 text-blue-600" />
+              </div>
+              <h3 class="text-xl font-semibold text-slate-800 mb-2">Windows Authentication</h3>
+              <p class="text-slate-500 mb-4 pb-7">Sign in using your Windows credentials</p>
+
+              <Button
+                @click="handleWindowsAuth"
+                :disabled="!selectedAppUser.trim()"
+                className="w-full h-14 text-lg bg-[#007d79] hover:bg-[#006663] transition-colors">
+                Sign In with Windows Authentication
+              </Button>
+            </div>
+          </div>
+
+          <!-- User Selection - Available for all methods -->
+          <div v-if="allowSelectUser" class="mt-8">
+            <Label className="text-xl text-bold mb-4 block text-center">Select User</Label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <button
-                @click="selectedRole = 'CMT_TEAM'"
-                :class="`p-8 rounded-xl border-2 transition-all duration-200 ${
-                  selectedRole === 'CMT_TEAM'
+                v-for="user in authStore.mockUsers.filter((u) => u.authProvider === 'application')"
+                :key="user.id"
+                @click="selectUser(user)"
+                :class="`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
+                  selectedAppUser === user.username
                     ? 'border-[#007d79] bg-[#007d79]/5 shadow-lg'
                     : 'border-slate-200 hover:border-[#007d79]/50 hover:bg-slate-50'
                 }`">
-                <div class="flex flex-col items-center gap-3">
-                  <div
-                    :class="`w-16 h-16 rounded-full flex items-center justify-center ${
-                      selectedRole === 'CMT_TEAM' ? 'bg-[#007d79]' : 'bg-slate-200'
-                    }`">
-                    <Building2 :class="`w-8 h-8 ${selectedRole === 'CMT_TEAM' ? 'text-white' : 'text-slate-600'}`" />
-                  </div>
-                  <div class="text-center">
-                    <p class="font-semibold text-lg text-slate-800">Contract Management</p>
-                    <p class="text-sm text-slate-500">Team</p>
-                  </div>
-                </div>
-              </button>
-
-              <button
-                @click="selectedRole = 'GENERAL_USER'"
-                :class="`p-8 rounded-xl border-2 transition-all duration-200 ${
-                  selectedRole === 'GENERAL_USER'
-                    ? 'border-[#007d79] bg-[#007d79]/5 shadow-lg'
-                    : 'border-slate-200 hover:border-[#007d79]/50 hover:bg-slate-50'
-                }`">
-                <div class="flex flex-col items-center gap-3">
-                  <div
-                    :class="`w-16 h-16 rounded-full flex items-center justify-center ${
-                      selectedRole === 'GENERAL_USER' ? 'bg-[#007d79]' : 'bg-slate-200'
-                    }`">
-                    <Users :class="`w-8 h-8 ${selectedRole === 'GENERAL_USER' ? 'text-white' : 'text-slate-600'}`" />
-                  </div>
-                  <div class="text-center">
-                    <p class="font-semibold text-lg text-slate-800">User Area</p>
-                    <p class="text-sm text-slate-500">General Access</p>
-                  </div>
+                <div class="min-w-0">
+                  <p class="font-semibold text-slate-800 truncate text-sm">{{ user.name }}</p>
+                  <p class="text-xs text-slate-600 truncate">{{ user.role }}</p>
                 </div>
               </button>
             </div>
           </div>
-
-          <!-- Sign In Button -->
-          <Button
-            @click="handleLogin"
-            :disabled="!selectedRole || !name.trim()"
-            className="w-full h-14 text-lg bg-[#007d79] hover:bg-[#006663] transition-colors">
-            Sign In to Portal
-          </Button>
         </CardContent>
       </Card>
     </div>
@@ -90,26 +163,92 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore, type User } from "@/stores/auth";
 import Card from "@/components/ui/card/Card.vue";
 import CardContent from "@/components/ui/card/CardContent.vue";
 import Button from "@/components/ui/button/Button.vue";
 import Input from "@/components/ui/input/Input.vue";
 import Label from "@/components/ui/label/Label.vue";
-import { Building2, Users } from "lucide-vue-next";
+import { Building2, Shield, Key, Monitor } from "lucide-vue-next";
 
 const router = useRouter();
 const authStore = useAuthStore();
+const allowSelectUser = true;
 
-const selectedRole = ref<"CMT_TEAM" | "GENERAL_USER" | null>(null);
-const name = ref("");
+const selectedAuthMethod = ref<"application" | "frontgate" | "windows">("application");
 
-const handleLogin = () => {
-  if (selectedRole.value && name.value.trim()) {
-    authStore.login(selectedRole.value, name.value.trim());
-    router.push("/workspace-selector");
+// Selected users for each authentication method
+const selectedAppUser = ref("");
+
+// Form data for different authentication methods
+const appLogin = ref({
+  username: "",
+  password: "",
+});
+
+const frontgateLogin = ref({
+  username: "",
+  password: "",
+});
+
+// Get user info for selected users
+const selectedAppUserInfo = computed(() => {
+  return authStore.mockUsers.find((u) => u.username === selectedAppUser.value) || null;
+});
+
+// Handle user selection from button grid
+const selectUser = (user: User) => {
+  selectedAppUser.value = user.username;
+  appLogin.value.username = user.username;
+  appLogin.value.password = "password"; // In real app, this would be handled differently
+
+  frontgateLogin.value.username = user.username;
+  frontgateLogin.value.password = "password"; // Same password as application (unified credentials)
+
+  handleApplicationLogin();
+};
+
+// Handle application login
+const handleApplicationLogin = () => {
+  if (appLogin.value.username.trim() && appLogin.value.password.trim()) {
+    const user = authStore.findUser(appLogin.value.username.trim(), "application");
+    if (user) {
+      // In a real application, you would validate password here
+      authStore.login(user);
+      router.push("/workspace-selector");
+    } else {
+      alert("Invalid credentials. Please select a valid user from the list.");
+    }
+  }
+};
+
+// Handle frontgate login
+const handleFrontgateLogin = () => {
+  if (frontgateLogin.value.username.trim() && frontgateLogin.value.password.trim()) {
+    const user = authStore.findUser(frontgateLogin.value.username.trim(), "frontgate");
+    if (user) {
+      // In a real application, you would validate Frontgate password here
+      authStore.login(user);
+      router.push("/workspace-selector");
+    } else {
+      alert("Invalid credentials. Please select a valid user from the list.");
+    }
+  }
+};
+
+// Handle Windows authentication
+const handleWindowsAuth = () => {
+  if (selectedAppUser.value.trim()) {
+    const user = authStore.findUser(selectedAppUser.value.trim(), "windows");
+    if (user) {
+      // In a real application, you would validate Windows credentials here
+      authStore.login(user);
+      router.push("/workspace-selector");
+    } else {
+      alert("Invalid credentials. Please use your username and password from Application or Frontgate login.");
+    }
   }
 };
 </script>
