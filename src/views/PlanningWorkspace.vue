@@ -69,8 +69,44 @@
               user?.role === UserRole.CONTRACT_MANAGEMENT_SENIOR_MANAGER ||
               user?.role === UserRole.CONTRACT_MANAGEMENT_SUPERVISOR
             "
-            className="data-[state=active]:bg-[#007d79] data-[state=active]:text-white px-8 py-2.5">
+            className="data-[state=active]:bg-[#007d79] data-[state=active]:text-white px-6 py-2.5 flex items-center gap-2">
             Review Required
+            <!-- Age-based badges in tab -->
+            <div v-if="getPendingDocumentsOlderThan7Days().length > 0 || getPendingDocumentsWithin7Days().length > 0" class="flex items-center gap-1">
+              <span
+                v-if="getPendingDocumentsOlderThan7Days().length > 0"
+                class="flex items-center gap-1 px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium cursor-help"
+                :title="`Dokumen pending lebih dari 7 hari: ${getPendingDocumentsOlderThan7Days().length} document(s)`">
+                {{ getPendingDocumentsOlderThan7Days().length }}
+              </span>
+              <span
+                v-if="getPendingDocumentsWithin7Days().length > 0"
+                class="flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium cursor-help"
+                :title="`Dokumen pending 7 hari atau kurang: ${getPendingDocumentsWithin7Days().length} document(s)`">
+                {{ getPendingDocumentsWithin7Days().length }}
+              </span>
+            </div>
+          </TabsTrigger>
+          <TabsTrigger
+            value="submitted"
+            v-if="user?.role === UserRole.CONTRACT_MANAGEMENT_ANALYST"
+            className="data-[state=active]:bg-[#007d79] data-[state=active]:text-white px-6 py-2.5 flex items-center gap-2">
+            Submitted Document
+            <!-- Age-based badges in tab -->
+            <div v-if="getPendingDocumentsOlderThan7Days().length > 0 || getPendingDocumentsWithin7Days().length > 0" class="flex items-center gap-1">
+              <span
+                v-if="getPendingDocumentsOlderThan7Days().length > 0"
+                class="flex items-center gap-1 px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium cursor-help"
+                :title="`Dokumen pending lebih dari 7 hari: ${getPendingDocumentsOlderThan7Days().length} document(s)`">
+                {{ getPendingDocumentsOlderThan7Days().length }}
+              </span>
+              <span
+                v-if="getPendingDocumentsWithin7Days().length > 0"
+                class="flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium cursor-help"
+                :title="`Dokumen pending 7 hari atau kurang: ${getPendingDocumentsWithin7Days().length} document(s)`">
+                {{ getPendingDocumentsWithin7Days().length }}
+              </span>
+            </div>
           </TabsTrigger>
         </TabsList>
 
@@ -333,15 +369,29 @@
         <!-- Review Required Tab (CMT only) -->
         <TabsContent
           v-if="
-            user?.role === UserRole.CONTRACT_MANAGEMENT_ANALYST ||
             user?.role === UserRole.CONTRACT_MANAGEMENT_SENIOR_MANAGER ||
             user?.role === UserRole.CONTRACT_MANAGEMENT_SUPERVISOR
           "
           value="review"
-          className="space-y-6">
+          className="space-y-4">
           <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-semibold text-slate-800">Documents Pending Review</h3>
+              <div class="flex items-center gap-4">
+                <h3 class="text-2xl font-semibold text-slate-800">Documents Pending Review</h3>
+                <!-- Age-based badges -->
+                <div class="flex items-center gap-2">
+                  <div
+                    class="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
+                    <Clock class="w-3 h-3" />
+                    > 7 hari: {{ getPendingDocumentsOlderThan7Days().length }}
+                  </div>
+                  <div
+                    class="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                    <Clock class="w-3 h-3" />
+                    ≤ 7 hari: {{ getPendingDocumentsWithin7Days().length }}
+                  </div>
+                </div>
+              </div>
               <span class="text-sm text-slate-500">
                 {{ filteredPendingReviewDocuments.length }} document(s) pending review
               </span>
@@ -404,7 +454,7 @@
                         className="bg-green-600 hover:bg-green-700 text-white">
                         ✓ Approve
                       </Button>
-                      <Button size="sm" variant="destructive" @click="handleRejectDocument(doc.id)">✗ Reject</Button>
+                      <Button size="sm" variant="destructive" @click="handleRejectDocument(doc.id)">✗ Revise</Button>
                       <Button size="sm" variant="ghost">
                         <Download class="w-4 h-4" />
                       </Button>
@@ -426,6 +476,114 @@
                   searchQuery.trim()
                     ? "No pending review documents match your search criteria."
                     : "All documents have been reviewed or no documents have been submitted yet."
+                }}
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+
+        <!-- Submitted Document Tab (CMT Analyst only) -->
+        <TabsContent value="submitted" className="space-y-4" v-if="user?.role === UserRole.CONTRACT_MANAGEMENT_ANALYST">
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-4">
+                <h3 class="text-2xl font-semibold text-slate-800">All Pending Documents</h3>
+                <!-- Age-based badges -->
+                <div class="flex items-center gap-2">
+                  <div
+                    class="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
+                    <Clock class="w-3 h-3" />
+                    > 7 hari: {{ getPendingDocumentsOlderThan7Days().length }}
+                  </div>
+                  <div
+                    class="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                    <Clock class="w-3 h-3" />
+                    ≤ 7 hari: {{ getPendingDocumentsWithin7Days().length }}
+                  </div>
+                </div>
+              </div>
+              <span class="text-sm text-slate-500">
+                {{ getAllPendingDocuments().length }} document(s) pending submission
+              </span>
+            </div>
+
+            <div v-if="getAllPendingDocuments().length > 0" class="space-y-4">
+              <div
+                v-for="doc in getAllPendingDocuments()"
+                :key="doc.id"
+                class="border border-amber-200 bg-amber-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded">
+                        PENDING SUBMISSION
+                      </span>
+                      <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">
+                        {{ doc.category }}
+                      </span>
+                      <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded font-medium">
+                        {{ doc.area }}
+                      </span>
+                      <span class="px-2 py-1 bg-slate-200 text-slate-700 text-xs rounded">
+                        {{ new Date(doc.uploadDate).toLocaleDateString() }}
+                      </span>
+                    </div>
+
+                    <p class="font-medium text-slate-800 mb-1">
+                      <a
+                        v-if="doc.linkUrl"
+                        :href="doc.linkUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer">
+                        {{ doc.fileName || doc.linkUrl }}
+                        <span class="text-xs ml-1">🔗</span>
+                      </a>
+                      <span v-else>{{ doc.fileName }}</span>
+                    </p>
+                    <p class="text-sm text-slate-600 mb-3">{{ doc.description }}</p>
+
+                    <!-- Metadata Display -->
+                    <div v-if="doc.metadata && Object.keys(doc.metadata).length > 0" class="mb-3">
+                      <div class="text-xs text-slate-500 mb-1">Metadata:</div>
+                      <div class="flex gap-1 flex-wrap">
+                        <span
+                          v-for="[key, value] in Object.entries(doc.metadata)"
+                          :key="key"
+                          class="text-xs px-1 py-0.5 bg-gray-100 text-gray-600 rounded">
+                          {{ key }}: {{ value }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-2 mt-3">
+                      <Button
+                        size="sm"
+                        @click="handleApproveDocument(doc.id)"
+                        className="bg-green-600 hover:bg-green-700 text-white">
+                        ✓ Approve
+                      </Button>
+                      <Button size="sm" variant="destructive" @click="handleRejectDocument(doc.id)">✗ Revise</Button>
+                      <Button size="sm" variant="ghost" @click="handleDownload(doc.fileName || 'document')">
+                        <Download class="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="text-center py-12">
+              <Folder class="w-16 h-16 mx-auto mb-4 text-slate-300" />
+              <h4 class="text-lg font-medium text-slate-600 mb-2">
+                {{ searchQuery.trim() ? `No Documents Found Matching "${searchQuery}"` : "No Pending Documents" }}
+              </h4>
+              <p class="text-slate-500">
+                {{
+                  searchQuery.trim()
+                    ? "No pending documents match your search criteria."
+                    : "There are currently no pending documents."
                 }}
               </p>
             </div>
@@ -473,6 +631,7 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
+  Clock,
 } from "lucide-vue-next";
 import {
   CONTRACT_TEMPLATES,
@@ -734,6 +893,31 @@ const getAllPlanningDocuments = (): Document[] => {
 const getPendingReviewDocuments = (): Document[] => {
   const allDocs = getDocumentsFromStorage();
   return allDocs.filter((doc) => doc.status === "pending_review");
+};
+
+const getAllPendingDocuments = (): Document[] => {
+  const allDocs = getDocumentsFromStorage();
+  return allDocs.filter((doc) => doc.status === "pending_review");
+};
+
+// Helper function to calculate days difference
+const getDaysSinceUpload = (uploadDate: string): number => {
+  const now = new Date();
+  const upload = new Date(uploadDate);
+  const diffTime = Math.abs(now.getTime() - upload.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+};
+
+// Functions to get pending documents by age
+const getPendingDocumentsOlderThan7Days = (): Document[] => {
+  const pendingDocs = getPendingReviewDocuments();
+  return pendingDocs.filter((doc) => getDaysSinceUpload(doc.uploadDate) > 7);
+};
+
+const getPendingDocumentsWithin7Days = (): Document[] => {
+  const pendingDocs = getPendingReviewDocuments();
+  return pendingDocs.filter((doc) => getDaysSinceUpload(doc.uploadDate) <= 7);
 };
 
 // Approval functions

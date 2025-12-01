@@ -2022,7 +2022,39 @@ const getSampleDocuments = (): Document[] => [
     category: 'Cost Structure',
     area: 'Pomalaa',
     workspace: 'planning',
-    uploadDate: '2024-01-30T16:45:00Z',
+    uploadDate: '2025-11-30T16:45:00Z',
+    status: 'pending_review',
+    metadata: {
+      totalAmount: 5000000,
+      currency: 'IDR',
+      fiscalYear: '2024',
+      costCenter: 'CC-OPER-001'
+    }
+  },
+  {
+    id: 'DOC-004',
+    fileName: 'cost_structure_q1_2024.xlsx',
+    description: 'Detailed cost breakdown for Q1 2024 operations',
+    category: 'Cost Structure',
+    area: 'Pomalaa',
+    workspace: 'planning',
+    uploadDate: '2025-11-30T16:45:00Z',
+    status: 'pending_review',
+    metadata: {
+      totalAmount: 5000000,
+      currency: 'IDR',
+      fiscalYear: '2024',
+      costCenter: 'CC-OPER-001'
+    }
+  },
+  {
+    id: 'DOC-004',
+    fileName: 'cost_structure_q1_2024.xlsx',
+    description: 'Detailed cost breakdown for Q1 2024 operations',
+    category: 'Cost Structure',
+    area: 'Pomalaa',
+    workspace: 'planning',
+    uploadDate: '2025-11-30T16:45:00Z',
     status: 'pending_review',
     metadata: {
       totalAmount: 5000000,
