@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 // Role types for the CMT system
-<<<<<<< HEAD
 export enum UserRole {
   CONTRACT_MANAGEMENT_SENIOR_MANAGER = "Contract Management Senior Manager",
   CONTRACT_MANAGEMENT_ADMINISTRATOR = "Contract Management Administrator",
@@ -23,38 +22,13 @@ export interface User {
   authProvider: 'application' | 'frontgate' | 'windows'
 }
 
-=======
-export type UserRole =
-  | 'CONTRACT_MANAGEMENT_SENIOR_MANAGER'
-  | 'CONTRACT_MANAGEMENT_ADMINISTRATOR'
-  | 'CONTRACT_MANAGEMENT_SUPERVISOR'
-  | 'CONTRACT_MANAGEMENT_ANALYST'
-  | 'USER'
-  | 'SYSTEM_ADMINISTRATOR'
-
-export interface User {
-  id: string
-  username: string
-  name: string
-  role: UserRole
-  email: string
-  department: string
-  loginTime: string
-  authProvider: 'application' | 'frontgate' | 'windows'
-}
-
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
 // Mock users database
 export const mockUsers: User[] = [
   {
     id: '1',
     username: 'jsmith',
     name: 'John Smith',
-<<<<<<< HEAD
     role: UserRole.CONTRACT_MANAGEMENT_SENIOR_MANAGER,
-=======
-    role: 'CONTRACT_MANAGEMENT_SENIOR_MANAGER',
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     email: 'john.smith@company.com',
     department: 'Contract Management',
     loginTime: '',
@@ -64,11 +38,7 @@ export const mockUsers: User[] = [
     id: '2',
     username: 'sadmin',
     name: 'Sarah Administrator',
-<<<<<<< HEAD
     role: UserRole.CONTRACT_MANAGEMENT_ADMINISTRATOR,
-=======
-    role: 'CONTRACT_MANAGEMENT_ADMINISTRATOR',
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     email: 'sarah.admin@company.com',
     department: 'Contract Management',
     loginTime: '',
@@ -78,11 +48,7 @@ export const mockUsers: User[] = [
     id: '3',
     username: 'msupervisor',
     name: 'Michael Supervisor',
-<<<<<<< HEAD
     role: UserRole.CONTRACT_MANAGEMENT_SUPERVISOR,
-=======
-    role: 'CONTRACT_MANAGEMENT_SUPERVISOR',
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     email: 'michael.supervisor@company.com',
     department: 'Contract Management',
     loginTime: '',
@@ -92,11 +58,7 @@ export const mockUsers: User[] = [
     id: '4',
     username: 'janalyst',
     name: 'Jane Analyst',
-<<<<<<< HEAD
     role: UserRole.CONTRACT_MANAGEMENT_ANALYST,
-=======
-    role: 'CONTRACT_MANAGEMENT_ANALYST',
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     email: 'jane.analyst@company.com',
     department: 'Contract Management',
     loginTime: '',
@@ -106,11 +68,7 @@ export const mockUsers: User[] = [
     id: '5',
     username: 'buser',
     name: 'Bob User',
-<<<<<<< HEAD
     role: UserRole.USER,
-=======
-    role: 'USER',
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     email: 'bob.user@company.com',
     department: 'Operations',
     loginTime: '',
@@ -120,11 +78,7 @@ export const mockUsers: User[] = [
     id: '6',
     username: 'sysadmin',
     name: 'System Admin',
-<<<<<<< HEAD
     role: UserRole.SYSTEM_ADMINISTRATOR,
-=======
-    role: 'SYSTEM_ADMINISTRATOR',
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     email: 'sys.admin@company.com',
     department: 'IT',
     loginTime: '',
@@ -137,7 +91,6 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(true)
 
   // Check if user belongs to Contract Management team
-<<<<<<< HEAD
   const isCMTSenior = computed(() => {
     if (!user.value) return false
 
@@ -178,29 +131,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     return user.value?.role === UserRole.SYSTEM_ADMINISTRATOR
   })
-=======
-  const isCMTTeam = computed(() => {
-    if (!user.value) return false
-    return user.value?.role === 'CONTRACT_MANAGEMENT_SENIOR_MANAGER' ||
-           user.value?.role === 'CONTRACT_MANAGEMENT_ADMINISTRATOR' ||
-           user.value?.role === 'CONTRACT_MANAGEMENT_SUPERVISOR' ||
-           user.value?.role === 'CONTRACT_MANAGEMENT_ANALYST' ||
-           user.value?.role === 'SYSTEM_ADMINISTRATOR'
-  })
-
-  // Get role display name
-  const getRoleDisplayName = (role: UserRole): string => {
-    const roleNames: Record<UserRole, string> = {
-      'CONTRACT_MANAGEMENT_SENIOR_MANAGER': 'Contract Management Senior Manager',
-      'CONTRACT_MANAGEMENT_ADMINISTRATOR': 'Contract Management Administrator',
-      'CONTRACT_MANAGEMENT_SUPERVISOR': 'Contract Management Supervisor',
-      'CONTRACT_MANAGEMENT_ANALYST': 'Contract Management Analyst',
-      'USER': 'User',
-      'SYSTEM_ADMINISTRATOR': 'System Administrator'
-    }
-    return roleNames[role]
-  }
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
 
   const initializeAuth = () => {
     const storedUser = localStorage.getItem('cmt_user')
@@ -235,17 +165,12 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     isLoading,
-<<<<<<< HEAD
     isCMTSenior,
     isCMTAdmin,
     isCMTSPV,
     isCMTAnalyst,
     isUser,
     isSYSAdmin,
-=======
-    isCMTTeam,
-    getRoleDisplayName,
->>>>>>> 2da5065328d26ad36feca15e4e2489be8f08adaf
     login,
     logout,
     initializeAuth,
