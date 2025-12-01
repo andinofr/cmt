@@ -6,36 +6,8 @@
       </DialogHeader>
 
       <div class="space-y-4 py-4">
-        <!-- Document Type -->
-        <div class="grid grid-cols-12 gap-4 items-start">
-          <div class="col-span-12">
-            <div class="grid grid-cols-2 gap-4">
-              <button
-                @click="documentType = 'file'"
-                :class="`p-4 rounded-lg border-2 transition-all ${
-                  documentType === 'file'
-                    ? 'border-[#007d79] bg-[#007d79]/5'
-                    : 'border-slate-200 hover:border-[#007d79]/50'
-                }`">
-                <FileText class="w-6 h-6 mx-auto mb-2 text-[#007d79]" />
-                <p class="font-medium">File Upload</p>
-              </button>
-              <button
-                @click="documentType = 'link'"
-                :class="`p-4 rounded-lg border-2 transition-all ${
-                  documentType === 'link'
-                    ? 'border-[#007d79] bg-[#007d79]/5'
-                    : 'border-slate-200 hover:border-[#007d79]/50'
-                }`">
-                <LinkIcon class="w-6 h-6 mx-auto mb-2 text-[#007d79]" />
-                <p class="font-medium">Link</p>
-              </button>
-            </div>
-          </div>
-        </div>
-
         <!-- File/Link Input -->
-        <div v-if="documentType === 'file'" class="grid grid-cols-12 gap-4 items-start">
+        <div class="grid grid-cols-12 gap-4 items-start">
           <div class="col-span-12">
             <div
               class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-[#007d79] transition-colors cursor-pointer">
@@ -51,15 +23,23 @@
           </div>
         </div>
 
-        <div v-else class="grid grid-cols-12 gap-4 items-start">
+        <!-- Category Select -->
+        <div class="grid grid-cols-12 gap-4 items-start">
           <div class="col-span-4">
-            <Label for="link-url" className="text-sm font-medium text-gray-900">
-              Link URL
+            <Label className="text-sm font-medium text-gray-900">
+              Document Category
               <span class="text-red-500">*</span>
             </Label>
           </div>
           <div class="col-span-8">
-            <Input id="link-url" type="url" placeholder="https://example.com/document" v-model="linkUrl" />
+            <Select v-model="category" width="w-full">
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem v-for="cat in DOCUMENT_CATEGORIES" :key="cat" :value="cat">{{ cat }}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -130,26 +110,6 @@
                   :index="index">
                   {{ c.id }} - {{ c.title }}
                 </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <!-- Category Select -->
-        <div class="grid grid-cols-12 gap-4 items-start">
-          <div class="col-span-4">
-            <Label className="text-sm font-medium text-gray-900">
-              Document Category
-              <span class="text-red-500">*</span>
-            </Label>
-          </div>
-          <div class="col-span-8">
-            <Select v-model="category" width="w-full">
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem v-for="cat in DOCUMENT_CATEGORIES" :key="cat" :value="cat">{{ cat }}</SelectItem>
               </SelectContent>
             </Select>
           </div>
