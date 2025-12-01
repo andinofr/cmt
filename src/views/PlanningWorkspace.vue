@@ -12,7 +12,11 @@
               <h1 class="text-xl font-bold text-slate-800">CMT PORTAL</h1>
             </div>
           </div>
-          <Button variant="ghost" size="sm" @click="router.push('/workspace-selector')" class="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            @click="router.push('/workspace-selector')"
+            className="flex items-center gap-2">
             <Home class="w-4 h-4" />
             Home
           </Button>
@@ -22,17 +26,17 @@
             <p class="text-sm text-slate-500">Welcome,</p>
             <p class="font-semibold text-slate-800">{{ user?.name }}</p>
           </div>
-          <Button variant="ghost" size="icon" class="rounded-full">
+          <Button variant="ghost" size="icon" className="rounded-full">
             <Bell class="w-5 h-5 text-slate-600" />
           </Button>
-          <Button variant="ghost" size="icon" class="rounded-full">
+          <Button variant="ghost" size="icon" className="rounded-full">
             <User class="w-5 h-5 text-slate-600" />
           </Button>
           <Button
             @click="handleLogout"
             variant="ghost"
             size="icon"
-            class="rounded-full hover:bg-red-50 hover:text-red-600">
+            className="rounded-full hover:bg-red-50 hover:text-red-600">
             <LogOut class="w-5 h-5" />
           </Button>
         </div>
@@ -113,7 +117,7 @@
                   variant="ghost"
                   size="sm"
                   @click="pricingCatalogueExpanded = !pricingCatalogueExpanded"
-                  class="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>{{ pricingCatalogueExpanded ? "Show Less" : "Show More" }}</span>
                   <ChevronDown v-if="!pricingCatalogueExpanded" class="w-4 h-4" />
                   <ChevronUp v-else class="w-4 h-4" />
@@ -136,7 +140,7 @@
                   variant="ghost"
                   size="sm"
                   @click="pricingCatalogueExpanded = !pricingCatalogueExpanded"
-                  class="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>Show More</span>
                   <ChevronDown class="w-4 h-4" />
                 </Button>
@@ -148,7 +152,7 @@
                   variant="ghost"
                   size="sm"
                   @click="pricingCatalogueExpanded = !pricingCatalogueExpanded"
-                  class="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>Show Less</span>
                   <ChevronUp class="w-4 h-4" />
                 </Button>
@@ -171,7 +175,7 @@
                   variant="ghost"
                   size="sm"
                   @click="scopeOfWorksExpanded = !scopeOfWorksExpanded"
-                  class="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>{{ scopeOfWorksExpanded ? "Show Less" : "Show More" }}</span>
                   <ChevronDown v-if="!scopeOfWorksExpanded" class="w-4 h-4" />
                   <ChevronUp v-else class="w-4 h-4" />
@@ -193,7 +197,7 @@
                   variant="ghost"
                   size="sm"
                   @click="scopeOfWorksExpanded = !scopeOfWorksExpanded"
-                  class="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>Show More</span>
                   <ChevronDown class="w-4 h-4" />
                 </Button>
@@ -205,7 +209,7 @@
                   variant="ghost"
                   size="sm"
                   @click="scopeOfWorksExpanded = !scopeOfWorksExpanded"
-                  class="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>Show Less</span>
                   <ChevronUp class="w-4 h-4" />
                 </Button>
@@ -231,7 +235,7 @@
                   variant="ghost"
                   size="sm"
                   @click="workPackageLibraryExpanded = !workPackageLibraryExpanded"
-                  class="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  className="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
                   <span>{{ workPackageLibraryExpanded ? "Show Less" : "Show More" }}</span>
                   <ChevronDown v-if="!workPackageLibraryExpanded" class="w-4 h-4" />
                   <ChevronUp v-else class="w-4 h-4" />
@@ -259,7 +263,7 @@
                     variant="ghost"
                     size="sm"
                     @click="workPackageLibraryExpanded = !workPackageLibraryExpanded"
-                    class="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                    className="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
                     <span>Show More</span>
                     <ChevronDown class="w-4 h-4" />
                   </Button>
@@ -273,7 +277,7 @@
                     variant="ghost"
                     size="sm"
                     @click="workPackageLibraryExpanded = !workPackageLibraryExpanded"
-                    class="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                    className="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
                     <span>Show Less</span>
                     <ChevronUp class="w-4 h-4" />
                   </Button>
@@ -355,7 +359,7 @@
                             </div>
                           </div>
                           <Button size="sm" variant="ghost">
-                            <Download class="w-4 h-4" />
+                            <Download className="w-4 h-4" />
                           </Button>
                         </div>
                       </div>
@@ -531,6 +535,7 @@ import {
   rejectDocument,
   type Document,
   type CatalogueItem,
+  Category,
 } from "@/data/mockData";
 
 import { useToast } from "@/composables/useToast";
@@ -546,7 +551,7 @@ const uploadModalOpen = ref(false);
 const searchQuery = ref("");
 const historyModalOpen = ref(false);
 const selectedDocumentForHistory = ref<CatalogueItem | null>(null);
-const selectedDocumentHistories = ref<CatalogueItem[] | null>(null);
+
 // Expand/collapse state for each section
 const pricingCatalogueExpanded = ref(false);
 const scopeOfWorksExpanded = ref(false);
@@ -558,29 +563,31 @@ const allAreaOptions = ["all", ...AREAS];
 // Filter functions
 const filteredPricingCatalogue = computed(() => {
   if (!searchQuery.value.trim()) {
-    return CONTRACT_TEMPLATES.pricingCatalogue.filter((template) => template.status === "approved");
+    return CONTRACT_TEMPLATES.filter((el) => el.category == Category.PRICING_CATALOGUE && el.status === "approved");
   }
   const query = searchQuery.value.toLowerCase();
-  return CONTRACT_TEMPLATES.pricingCatalogue.filter(
-    (template) =>
-      template.status === "approved" &&
-      (template.category.toLowerCase().includes(query) ||
-        (template.fileType && template.fileType.toLowerCase().includes(query)) ||
-        template.fileName.toLowerCase().includes(query)),
+  return CONTRACT_TEMPLATES.filter(
+    (el) =>
+      el.category == Category.PRICING_CATALOGUE &&
+      el.status === "approved" &&
+      (el.category.toLowerCase().includes(query) ||
+        (el.fileType && el.fileType.toLowerCase().includes(query)) ||
+        el.fileName.toLowerCase().includes(query)),
   );
 });
 
 const filteredScopeOfWorks = computed(() => {
   if (!searchQuery.value.trim()) {
-    return CONTRACT_TEMPLATES.scopeOfWorks.filter((template) => template.status === "approved");
+    return CONTRACT_TEMPLATES.filter((el) => el.category == Category.SCOPE_OF_WORKS && el.status === "approved");
   }
   const query = searchQuery.value.toLowerCase();
-  return CONTRACT_TEMPLATES.scopeOfWorks.filter(
-    (template) =>
-      template.status === "approved" &&
-      (template.category.toLowerCase().includes(query) ||
-        (template.fileType && template.fileType.toLowerCase().includes(query)) ||
-        template.fileName.toLowerCase().includes(query)),
+  return CONTRACT_TEMPLATES.filter(
+    (el) =>
+      el.category == Category.SCOPE_OF_WORKS &&
+      el.status === "approved" &&
+      (el.category.toLowerCase().includes(query) ||
+        (el.fileType && el.fileType.toLowerCase().includes(query)) ||
+        el.fileName.toLowerCase().includes(query)),
   );
 });
 
@@ -663,16 +670,12 @@ const handleDownload = (fileName: string) => {
 
 const handleShowHistory = (template: CatalogueItem) => {
   selectedDocumentForHistory.value = template;
-  selectedDocumentHistories.value = CONTRACT_TEMPLATES.pricingCatalogue.filter(
-    (el) => (el.fileType = template.fileType),
-  );
   historyModalOpen.value = true;
 };
 
 const closeHistoryModal = () => {
   historyModalOpen.value = false;
   selectedDocumentForHistory.value = null;
-  selectedDocumentHistories.value = null;
 };
 
 const getAreaDocuments = (area: string): Document[] => {

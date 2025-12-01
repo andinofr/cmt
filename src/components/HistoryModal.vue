@@ -26,19 +26,19 @@
         <div class="mb-6 p-4 bg-gray-50 rounded-lg">
           <h4 class="font-medium text-gray-900 mb-2">Document Information</h4>
           <div class="grid grid-cols-[40%_60%] gap-4 text-sm">
-            <div class="grid grid-cols-[80px_100%]">
+            <div class="grid grid-cols-[80px_auto]">
               <span class="font-medium text-gray-700">Category</span>
               <span class="ml-2 text-gray-600">: {{ documentInfo?.category }}</span>
             </div>
-            <div class="grid grid-cols-[80px_100%]">
+            <div class="grid grid-cols-[80px_auto]">
               <span class="font-medium text-gray-700">File Name</span>
               <span class="ml-2 text-gray-600">: {{ documentInfo?.fileName }}</span>
             </div>
-            <div class="grid grid-cols-[80px_100%]">
+            <div class="grid grid-cols-[80px_auto]">
               <span class="font-medium text-gray-700">File Type</span>
               <span class="ml-2 text-gray-600">: {{ documentInfo?.fileType }}</span>
             </div>
-            <div class="grid grid-cols-[80px_100%]">
+            <div class="grid grid-cols-[80px_auto]">
               <span class="font-medium text-gray-700">Description</span>
               <span class="ml-2 text-gray-600">: {{ documentInfo?.description }}</span>
             </div>
@@ -59,18 +59,25 @@
               v-for="(item, index) in history"
               :key="index"
               class="flex gap-4 p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+              <DocumentCard
+                class="w-full"
+                :hide-history-button="true"
+                :data="item"
+                :variant="item.category === Category.PRICING_CATALOGUE ? 'pricing' : 'scope'"
+                @download="handleDownload" />
+
               <!-- Icon and Date -->
-              <div class="flex flex-col items-center">
+              <!-- <div class="flex flex-col items-center">
                 <div
                   class="w-10 h-10 rounded-full flex items-center justify-center"
                   :class="getHistoryIconClass(item.type)">
                   <component :is="getHistoryIcon(item.type)" class="w-5 h-5" />
                 </div>
                 <div v-if="index < history.length - 1" class="w-0.5 h-8 bg-gray-300 mt-2"></div>
-              </div>
+              </div> -->
 
               <!-- Content -->
-              <div class="flex-1">
+              <!-- <div class="flex-1">
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-medium text-gray-900">{{ getHistoryTitle(item.type) }}</span>
                   <span class="text-xs text-gray-500">{{ formatDate(item.date) }}</span>
@@ -91,7 +98,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -109,7 +116,11 @@
 import { computed } from "vue";
 import { History, X, Upload, Download, FileCheck, AlertTriangle, User } from "lucide-vue-next";
 import Button from "@/components/ui/button/Button.vue";
-import type { CatalogueItem } from "@/data/mockData";
+import { Category, CONTRACT_TEMPLATES, type CatalogueItem } from "@/data/mockData";
+import DocumentCard from "./DocumentCard.vue";
+import { useToast } from "@/composables/useToast";
+
+const { toast } = useToast();
 
 interface HistoryItem {
   type: "upload" | "download" | "approval" | "rejection" | "modification";
@@ -131,106 +142,19 @@ const emit = defineEmits<{
 }>();
 
 // Generate relevant history data based on fileType from mockdata
-const history = computed<HistoryItem[]>(() => {
+const history = computed<CatalogueItem[]>(() => {
   if (!props.documentInfo) return [];
 
-  const fileType = props.documentInfo.fileType;
-  const uploadDate = new Date(props.documentInfo.uploadDate);
-  const approvedDate = props.documentInfo.approvedDate ? new Date(props.documentInfo.approvedDate) : null;
-
-  const baseHistory: HistoryItem[] = [];
-
-  // Upload event
-  baseHistory.push({
-    type: "upload",
-    date: uploadDate.toISOString(),
-    description: `Document uploaded as ${fileType} reference file for ${props.documentInfo.category}`,
-    user: props.documentInfo.uploaderName,
-    metadata: {
-      description: props.documentInfo.description,
-      category: props.documentInfo.category,
-      version: "1.0",
-      size: `${(Math.random() * 5 + 1).toFixed(1)} MB`,
-    },
-  });
-
-  // Add approval/rejection based on status
-  if (props.documentInfo.status === "approved" && approvedDate && props.documentInfo.approverName) {
-    baseHistory.push({
-      type: "approval",
-      date: approvedDate.toISOString(),
-      description: `Document approved and added to active catalogue`,
-      user: props.documentInfo.approverName,
-      metadata: {
-        approverRole: "CMT Senior Manager",
-        reviewScore: ["A+", "A", "B+", "B"][Math.floor(Math.random() * 4)],
-        category: props.documentInfo.category,
-        fileType: fileType,
-      },
-    });
-  } else if (props.documentInfo.status === "rejected" && approvedDate && props.documentInfo.approverName) {
-    baseHistory.push({
-      type: "rejection",
-      date: approvedDate.toISOString(),
-      description: `Document rejected - requires revision and resubmission`,
-      user: props.documentInfo.approverName,
-      metadata: {
-        rejectionReason: "Incomplete documentation",
-        approverRole: "CMT Manager",
-        category: props.documentInfo.category,
-        fileType: fileType,
-      },
-    });
-  } else if (props.documentInfo.status === "pending") {
-    baseHistory.push({
-      type: "modification",
-      date: new Date(uploadDate.getTime() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours after upload
-      description: `Document submitted for review and approval`,
-      user: "Document Manager",
-      metadata: {
-        reviewQueue: "CMT Approval Queue",
-        priority: "Normal",
-        category: props.documentInfo.category,
-        fileType: fileType,
-      },
-    });
-  }
-
-  // Add recent download activity
-  const downloadDate = new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000); // Random time within last week
-  baseHistory.push({
-    type: "download",
-    date: downloadDate.toISOString(),
-    description: `Document downloaded for ${fileType.toLowerCase()} reference`,
-    user: getRandomUser(),
-    metadata: {
-      department: getRandomDepartment(),
-      purpose: `${props.documentInfo.category} Planning`,
-      fileType: fileType,
-    },
-  });
-
-  // Add modification if there are multiple versions in work package library
-  if (Math.random() > 0.6) {
-    // 40% chance of having modifications
-    const modDate = new Date(uploadDate.getTime() + Math.random() * 30 * 24 * 60 * 60 * 1000); // Random time within 30 days
-    baseHistory.push({
-      type: "modification",
-      date: modDate.toISOString(),
-      description: `Document updated to version 1.1 with revised ${fileType.toLowerCase()} specifications`,
-      user: "Admin CMT",
-      metadata: {
-        updatedFields: "version, specifications, approvalDate",
-        previousVersion: "1.0",
-        newVersion: "1.1",
-        changeReason: "Updated requirements",
-        fileType: fileType,
-      },
-    });
-  }
-
-  // Sort by date (newest first)
-  return baseHistory.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return CONTRACT_TEMPLATES.filter(
+    (doc) =>
+      doc.fileType === props.documentInfo?.fileType &&
+      doc.category === props.documentInfo?.category &&
+      doc.approvedDate,
+  ).sort(
+    (a, b) =>
+      (b.approvedDate ? new Date(b.approvedDate).getTime() : 0) -
+      (a.approvedDate ? new Date(a.approvedDate).getTime() : 0),
+  );
 });
 
 // Helper functions to generate realistic mock data
@@ -324,6 +248,13 @@ const formatDate = (dateString: string) => {
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+  });
+};
+
+const handleDownload = (fileName: string) => {
+  toast({
+    title: "Download Started",
+    description: `Downloading ${fileName}...`,
   });
 };
 </script>

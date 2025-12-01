@@ -15,9 +15,7 @@
         <FileText class="w-6 h-6 text-white" />
       </div>
       <div class="flex-1">
-        <p class="font-medium text-slate-800">
-          {{ props.data.fileType }}
-        </p>
+        <p class="font-medium text-slate-800">{{ props.data.fileType }} {{ props.data.version }}</p>
         <p class="text-sm text-slate-600">{{ props.data.fileName }}</p>
 
         <div class="flex items-center gap-1 mt-2">
@@ -26,7 +24,6 @@
           <span class="text-xs text-slate-500">({{ formattedDate }})</span>
         </div>
 
-        <!-- Metadata Section -->
         <div v-if="props.data.approverName" class="flex items-center gap-1">
           <span class="text-xs text-slate-500">Approved by:</span>
           <span class="text-xs font-medium">{{ props.data.approverName }}</span>
@@ -36,6 +33,7 @@
     </div>
     <div class="flex gap-1">
       <Button
+        v-if="!hideHistoryButton"
         size="sm"
         variant="ghost"
         @click="handleShowHistory"
@@ -68,10 +66,12 @@ import type { CatalogueItem } from "@/data/mockData";
 interface DocumentCardProps {
   data: CatalogueItem;
   variant?: "pricing" | "scope" | "library";
+  hideHistoryButton?: boolean;
 }
 
 const props = withDefaults(defineProps<DocumentCardProps>(), {
   variant: "pricing",
+  hideHistoryButton: false,
 });
 
 const emit = defineEmits<{
