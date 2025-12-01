@@ -84,11 +84,24 @@
         <TabsContent value="catalogue" className="space-y-8">
           <!-- Work Package - Pricing Catalogue -->
           <Card class="shadow-lg border-0">
-            <CardContent class="p-8">
-              <h3 class="text-2xl font-semibold text-slate-800 mb-6">Work Package Pricing Catalogue</h3>
+            <CardContent class="px-8 py-6">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold text-slate-800">Work Package Pricing Catalogue</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="pricingCatalogueExpanded = !pricingCatalogueExpanded"
+                  class="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>{{ pricingCatalogueExpanded ? "Show Less" : "Show More" }}</span>
+                  <ChevronDown v-if="!pricingCatalogueExpanded" class="w-4 h-4" />
+                  <ChevronUp v-else class="w-4 h-4" />
+                </Button>
+              </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div
-                  v-for="template in CONTRACT_TEMPLATES.pricingCatalogue"
+                  v-for="template in pricingCatalogueExpanded
+                    ? CONTRACT_TEMPLATES.pricingCatalogue
+                    : CONTRACT_TEMPLATES.pricingCatalogue.slice(0, 4)"
                   :key="template.id"
                   class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
                   <div class="flex items-center gap-3">
@@ -123,16 +136,59 @@
                   </Button>
                 </div>
               </div>
+              <!-- Show remaining count when collapsed -->
+              <div
+                v-if="!pricingCatalogueExpanded && CONTRACT_TEMPLATES.pricingCatalogue.length > 4"
+                class="text-center mt-4">
+                <p class="text-sm text-slate-500">
+                  And {{ CONTRACT_TEMPLATES.pricingCatalogue.length - 4 }} more items...
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="pricingCatalogueExpanded = !pricingCatalogueExpanded"
+                  class="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>Show More</span>
+                  <ChevronDown class="w-4 h-4" />
+                </Button>
+              </div>
+
+              <!-- Show Less button when expanded -->
+              <div
+                v-if="pricingCatalogueExpanded && CONTRACT_TEMPLATES.pricingCatalogue.length > 4"
+                class="text-center mt-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="pricingCatalogueExpanded = !pricingCatalogueExpanded"
+                  class="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>Show Less</span>
+                  <ChevronUp class="w-4 h-4" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
           <!-- Work Package - Scope of Works -->
           <Card class="shadow-lg border-0">
-            <CardContent class="p-8">
-              <h3 class="text-2xl font-semibold text-slate-800 mb-6">Work Package Scope of Works</h3>
+            <CardContent class="px-8 py-6">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold text-slate-800">Work Package Scope of Works</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="scopeOfWorksExpanded = !scopeOfWorksExpanded"
+                  class="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>{{ scopeOfWorksExpanded ? "Show Less" : "Show More" }}</span>
+                  <ChevronDown v-if="!scopeOfWorksExpanded" class="w-4 h-4" />
+                  <ChevronUp v-else class="w-4 h-4" />
+                </Button>
+              </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div
-                  v-for="template in CONTRACT_TEMPLATES.scopeOfWorks"
+                  v-for="template in scopeOfWorksExpanded
+                    ? CONTRACT_TEMPLATES.scopeOfWorks
+                    : CONTRACT_TEMPLATES.scopeOfWorks.slice(0, 4)"
                   :key="template.id"
                   class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg hover:shadow-md transition-shadow">
                   <div class="flex items-center gap-3">
@@ -167,55 +223,122 @@
                   </Button>
                 </div>
               </div>
+              <!-- Show remaining count when collapsed -->
+              <div v-if="!scopeOfWorksExpanded && CONTRACT_TEMPLATES.scopeOfWorks.length > 4" class="text-center mt-4">
+                <p class="text-sm text-slate-500">And {{ CONTRACT_TEMPLATES.scopeOfWorks.length - 4 }} more items...</p>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="scopeOfWorksExpanded = !scopeOfWorksExpanded"
+                  class="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>Show More</span>
+                  <ChevronDown class="w-4 h-4" />
+                </Button>
+              </div>
+
+              <!-- Show Less button when expanded -->
+              <div v-if="scopeOfWorksExpanded && CONTRACT_TEMPLATES.scopeOfWorks.length > 2" class="text-center mt-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="scopeOfWorksExpanded = !scopeOfWorksExpanded"
+                  class="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>Show Less</span>
+                  <ChevronUp class="w-4 h-4" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
           <!-- Work Package Library -->
           <Card class="shadow-lg border-0">
-            <CardContent class="p-8">
-              <h3 class="text-2xl font-semibold text-slate-800 mb-6">Work Package Library</h3>
-              <p class="text-slate-600 mb-4">Archived versions of work package documents</p>
+            <CardContent class="px-8 py-6">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h3 class="text-2xl font-semibold text-slate-800">Work Package Library</h3>
+                  <p class="text-slate-600">Archived versions of work package documents</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  @click="workPackageLibraryExpanded = !workPackageLibraryExpanded"
+                  class="flex items-center gap-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                  <span>{{ workPackageLibraryExpanded ? "Show Less" : "Show More" }}</span>
+                  <ChevronDown v-if="!workPackageLibraryExpanded" class="w-4 h-4" />
+                  <ChevronUp v-else class="w-4 h-4" />
+                </Button>
+              </div>
 
-              <div v-if="WORK_PACKAGE_LIBRARY.length > 0" class="space-y-4">
-                <div
-                  v-for="template in WORK_PACKAGE_LIBRARY"
-                  :key="template.id"
-                  class="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-                  <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
-                      <FileText class="w-6 h-6 text-white" />
+              <div v-if="WORK_PACKAGE_LIBRARY.length > 0">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div
+                    v-for="template in workPackageLibraryExpanded
+                      ? WORK_PACKAGE_LIBRARY
+                      : WORK_PACKAGE_LIBRARY.slice(0, 4)"
+                    :key="template.id"
+                    class="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3">
+                      <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
+                        <FileText class="w-6 h-6 text-white" />
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium text-slate-800">
+                          {{ template.code }} {{ template.workName ? template.workName : template.category }} (Archive)
+                        </p>
+                        <p class="text-sm text-slate-600">
+                          Category: {{ template.category }} | {{ template.workName || "Reference Document" }}
+                        </p>
+                        <p class="text-xs text-slate-500 mt-1">
+                          Uploaded:
+                          {{
+                            new Date(template.uploadDate).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          }}
+                        </p>
+                      </div>
                     </div>
-                    <div class="flex-1">
-                      <p class="font-medium text-slate-800">
-                        {{ template.code }} {{ template.workName ? template.workName : template.category }} (Archive)
-                      </p>
-                      <p class="text-sm text-slate-600">
-                        Category: {{ template.category }} | {{ template.workName || "Reference Document" }}
-                      </p>
-                      <p class="text-xs text-slate-500 mt-1">
-                        Uploaded:
-                        {{
-                          new Date(template.uploadDate).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        }}
-                      </p>
-                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      @click="handleDownload(template.fileName)"
+                      class="hover:bg-gray-200">
+                      <Download class="w-4 h-4" />
+                    </Button>
                   </div>
+                </div>
+                <!-- Show remaining count when collapsed -->
+                <div v-if="!workPackageLibraryExpanded && WORK_PACKAGE_LIBRARY.length > 4" class="text-center mt-4">
+                  <p class="text-sm text-slate-500">
+                    And {{ WORK_PACKAGE_LIBRARY.length - 4 }} more archived documents...
+                  </p>
                   <Button
-                    size="sm"
                     variant="ghost"
-                    @click="handleDownload(template.fileName)"
-                    class="hover:bg-gray-200">
-                    <Download class="w-4 h-4" />
+                    size="sm"
+                    @click="workPackageLibraryExpanded = !workPackageLibraryExpanded"
+                    class="flex items-center gap-2 mx-auto mt-2 text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                    <span>Show More</span>
+                    <ChevronDown class="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <!-- Show Less button when expanded -->
+                <div v-if="workPackageLibraryExpanded && WORK_PACKAGE_LIBRARY.length > 4" class="text-center mt-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    @click="workPackageLibraryExpanded = !workPackageLibraryExpanded"
+                    class="flex items-center gap-2 mx-auto text-[#007d79] hover:bg-[#007d79] hover:text-white">
+                    <span>Show Less</span>
+                    <ChevronUp class="w-4 h-4" />
                   </Button>
                 </div>
               </div>
-
               <div v-else class="text-center py-8">
                 <Folder class="w-12 h-12 mx-auto mb-3 text-slate-300" />
                 <p class="text-slate-500">No archived documents in library</p>
@@ -414,7 +537,19 @@ import TabsList from "@/components/ui/tabs/TabsList.vue";
 import TabsTrigger from "@/components/ui/tabs/TabsTrigger.vue";
 import TabsContent from "@/components/ui/tabs/TabsContent.vue";
 import UploadModal from "@/components/UploadModal.vue";
-import { Building2, Bell, User, LogOut, Home, Download, FileText, Folder, Upload as UploadIcon } from "lucide-vue-next";
+import {
+  Building2,
+  Bell,
+  User,
+  LogOut,
+  Home,
+  Download,
+  FileText,
+  Folder,
+  Upload as UploadIcon,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-vue-next";
 import {
   CONTRACT_TEMPLATES,
   WORK_PACKAGE_LIBRARY,
@@ -434,6 +569,11 @@ const user = computed(() => authStore.user);
 const activeTab = ref("catalogue");
 const selectedArea = ref("all"); // Default to "all" areas
 const uploadModalOpen = ref(false);
+
+// Expand/collapse state for each section
+const pricingCatalogueExpanded = ref(false);
+const scopeOfWorksExpanded = ref(false);
+const workPackageLibraryExpanded = ref(false);
 
 // All areas including "All Areas" option
 const allAreaOptions = ["all", ...AREAS];
