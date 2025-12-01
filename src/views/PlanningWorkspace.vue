@@ -560,34 +560,88 @@ const workPackageLibraryExpanded = ref(false);
 // All areas including "All Areas" option
 const allAreaOptions = ["all", ...AREAS];
 
+const contractCatalogue = computed(() => {
+  const approvedItems = CONTRACT_TEMPLATES.filter(
+    (el) => el.category == Category.PRICING_CATALOGUE && el.status === "approved",
+  );
+
+  // Group by fileType and get the most recent approved date for each group
+  const groupedByFileType = new Map();
+
+  approvedItems.forEach(item => {
+    const fileType = item.fileType;
+    const currentApprovedDate = new Date(item.approvedDate || item.uploadDate);
+
+    if (!groupedByFileType.has(fileType)) {
+      groupedByFileType.set(fileType, item);
+    } else {
+      const existingItem = groupedByFileType.get(fileType);
+      const existingApprovedDate = new Date(existingItem.approvedDate || existingItem.uploadDate);
+
+      // Keep the item with the most recent approved date
+      if (currentApprovedDate > existingApprovedDate) {
+        groupedByFileType.set(fileType, item);
+      }
+    }
+  });
+
+  return Array.from(groupedByFileType.values());
+});
+
+const scopeOfWorksCatalogue = computed(() => {
+  const approvedItems = CONTRACT_TEMPLATES.filter(
+    (el) => el.category == Category.SCOPE_OF_WORKS && el.status === "approved",
+  );
+
+  // Group by fileType and get the most recent approved date for each group
+  const groupedByFileType = new Map();
+
+  approvedItems.forEach(item => {
+    const fileType = item.fileType;
+    const currentApprovedDate = new Date(item.approvedDate || item.uploadDate);
+
+    if (!groupedByFileType.has(fileType)) {
+      groupedByFileType.set(fileType, item);
+    } else {
+      const existingItem = groupedByFileType.get(fileType);
+      const existingApprovedDate = new Date(existingItem.approvedDate || existingItem.uploadDate);
+
+      // Keep the item with the most recent approved date
+      if (currentApprovedDate > existingApprovedDate) {
+        groupedByFileType.set(fileType, item);
+      }
+    }
+  });
+
+  return Array.from(groupedByFileType.values());
+});
+
 // Filter functions
 const filteredPricingCatalogue = computed(() => {
+  const catalogue = contractCatalogue.value;
   if (!searchQuery.value.trim()) {
-    return CONTRACT_TEMPLATES.filter((el) => el.category == Category.PRICING_CATALOGUE && el.status === "approved");
+    return catalogue;
   }
   const query = searchQuery.value.toLowerCase();
-  return CONTRACT_TEMPLATES.filter(
+  return catalogue.filter(
     (el) =>
-      el.category == Category.PRICING_CATALOGUE &&
-      el.status === "approved" &&
-      (el.category.toLowerCase().includes(query) ||
-        (el.fileType && el.fileType.toLowerCase().includes(query)) ||
-        el.fileName.toLowerCase().includes(query)),
+      el.category.toLowerCase().includes(query) ||
+      (el.fileType && el.fileType.toLowerCase().includes(query)) ||
+      el.fileName.toLowerCase().includes(query),
   );
 });
 
 const filteredScopeOfWorks = computed(() => {
+  const catalogue = scopeOfWorksCatalogue.value;
   if (!searchQuery.value.trim()) {
-    return CONTRACT_TEMPLATES.filter((el) => el.category == Category.SCOPE_OF_WORKS && el.status === "approved");
+    return catalogue;
   }
   const query = searchQuery.value.toLowerCase();
-  return CONTRACT_TEMPLATES.filter(
+  return catalogue.filter(
     (el) =>
-      el.category == Category.SCOPE_OF_WORKS &&
-      el.status === "approved" &&
-      (el.category.toLowerCase().includes(query) ||
-        (el.fileType && el.fileType.toLowerCase().includes(query)) ||
-        el.fileName.toLowerCase().includes(query)),
+      el.category.toLowerCase().includes(query) ||
+      (el.fileType && el.fileType.toLowerCase().includes(query)) ||
+      el.fileName.toLowerCase().includes(query),
   );
 });
 
