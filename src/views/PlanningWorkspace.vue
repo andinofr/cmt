@@ -302,88 +302,31 @@
         </TabsContent>
 
         <!-- Planning Document Tab -->
-        <TabsContent value="document" className="space-y-6">
+        <TabsContent value="document" className="space-y-4 !-mt-9">
           <!-- Area Tabs -->
+          <div class="flex justify-end">
+            <Button
+              @click="openLinkedGuide()"
+              className="bg-[#007d79] hover:bg-[#006663] text-white flex items-center gap-2">
+              <ExternalLink class="w-4 h-4" />
+              Open Guide
+            </Button>
+          </div>
+
           <div class="bg-white rounded-lg shadow-lg p-6">
-            <Tabs v-model="selectedArea">
-              <TabsList className="w-full justify-start bg-slate-100 p-1 flex-wrap">
-                <TabsTrigger
-                  v-for="area in allAreaOptions"
-                  :key="area"
-                  :value="area"
-                  className="data-[state=active]:bg-white px-6 py-2">
-                  {{ area === "all" ? "All Areas" : area }}
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent v-for="area in allAreaOptions" :key="area" :value="area" className="mt-6">
-                <div class="space-y-6">
-                  <div
-                    v-for="[groupName, docs] in Object.entries(
-                      groupDocumentsByCategory(getFilteredPlanningDocuments(area)),
-                    )"
-                    :key="groupName">
-                    <div class="flex items-center gap-3 mb-4">
-                      <Folder class="w-5 h-5 text-[#007d79]" />
-                      <h4 class="font-semibold text-lg text-slate-800">{{ groupName }}</h4>
-                      <span class="text-sm text-slate-500">({{ docs.length }})</span>
-                    </div>
-                    <div v-if="docs.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
-                      <div
-                        v-for="doc in docs"
-                        :key="doc.id"
-                        class="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:shadow-md transition-shadow">
-                        <div class="flex items-start justify-between">
-                          <div class="flex-1">
-                            <p class="font-medium text-slate-800 mb-1">
-                              <a
-                                v-if="doc.linkUrl"
-                                :href="doc.linkUrl"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer">
-                                {{ doc.linkUrl }}
-                                <span class="text-xs ml-1">🔗</span>
-                              </a>
-                              <span v-else>{{ doc.fileName }}</span>
-                            </p>
-                            <p class="text-sm text-slate-600 mb-2">{{ doc.description }}</p>
-                            <div class="flex gap-2 flex-wrap">
-                              <span class="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                                {{ doc.category }}
-                              </span>
-                              <span
-                                v-if="area === 'all'"
-                                class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded font-medium">
-                                {{ doc.area }}
-                              </span>
-                              <span class="text-xs px-2 py-1 bg-slate-200 text-slate-700 rounded">
-                                {{ new Date(doc.uploadDate).toLocaleDateString() }}
-                              </span>
-                            </div>
-                          </div>
-                          <Button size="sm" variant="ghost">
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                    <div v-else class="text-center py-8 bg-slate-50 rounded-lg border border-dashed border-slate-300">
-                      <Folder class="w-12 h-12 mx-auto mb-2 text-slate-300" />
-                      <p class="text-slate-500">No documents in this category</p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Show no results message when filtered and no results -->
-                <div
-                  v-if="searchQuery.trim() && getFilteredPlanningDocuments(selectedArea).length === 0"
-                  class="text-center py-8">
-                  <FileText class="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                  <p class="text-slate-500">No planning documents found matching "{{ searchQuery }}"</p>
-                </div>
-              </TabsContent>
-            </Tabs>
+            <!-- Google Forms iframe -->
+            <div class="w-full h-[700px]">
+              <iframe
+                src="https://docs.google.com/forms/d/e/1FAIpQLSfQVBK_cUWDJMdxpSvQaNksgVuDP-t83KOF7bah87-KiArCQQ/viewform"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                marginheight="0"
+                marginwidth="0"
+                title="Contract Request Form">
+                Loading...
+              </iframe>
+            </div>
           </div>
         </TabsContent>
 
@@ -529,6 +472,7 @@ import {
   Upload as UploadIcon,
   ChevronDown,
   ChevronUp,
+  ExternalLink,
 } from "lucide-vue-next";
 import {
   CONTRACT_TEMPLATES,
@@ -858,5 +802,9 @@ const getFilteredPlanningDocuments = (area: string) => {
       doc.area.toLowerCase().includes(query) ||
       (doc.linkUrl && doc.linkUrl.toLowerCase().includes(query)),
   );
+};
+
+const openLinkedGuide = () => {
+  window.open("https://andinofr.github.io/cmt/", "_blank");
 };
 </script>
