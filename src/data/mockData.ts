@@ -22,7 +22,7 @@ export interface Document {
   uploadDate: string
   contractId?: string
   metadata?: Record<string, any>
-  status?: 'pending_review' | 'approved' | 'rejected'
+  status?: 'pending_review' | 'approved' | 'rejected' | 'revision_requested'
   reviewedBy?: string
   reviewedDate?: string
   reviewNotes?: string
@@ -251,7 +251,7 @@ export interface CatalogueItem {
   fileType: string
   fileName: string
   uploadDate: string
-  status: 'approved' | 'pending' | 'rejected'
+  status: 'approved' | 'pending' | 'rejected' | 'revision_required'
   uploaderName: string
   approverName?: string
   approvedDate?: string | number
@@ -277,6 +277,97 @@ export const CONTRACT_TEMPLATES: CatalogueItem[] = [
     approverName: 'John Smith',
     approvedDate: '2024-02-21T14:30:00Z',
     version: 'v1.0',
+  },
+  {
+    id: 'CP003-041',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_1',
+    uploadDate: '2024-11-15T10:00:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-16T14:30:00Z',
+    description: 'Heavy equipment pricing needs revision for 2025 rates',
+    version: 'v2.1'
+  },
+  {
+    id: 'CP003-042',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_2',
+    uploadDate: '2024-11-25T09:30:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-26T11:15:00Z',
+    description: 'Updated pricing structure pending vendor confirmation',
+    version: 'v2.2'
+  },
+  {
+    id: 'CP003-043',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_3',
+    uploadDate: '2024-11-20T14:45:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-21T16:00:00Z',
+    description: 'Equipment specifications require update for new models',
+    version: 'v2.3'
+  },
+  {
+    id: 'CP003-044',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_4',
+    uploadDate: '2024-11-18T08:15:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-19T10:30:00Z',
+    description: 'Maintenance costs need recalibration for new contracts',
+    version: 'v2.4'
+  },
+  {
+    id: 'CP003-045',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_5',
+    uploadDate: '2024-11-22T13:20:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-23T15:45:00Z',
+    description: 'Fuel consumption rates need adjustment for new equipment',
+    version: 'v2.5'
+  },
+  {
+    id: 'CP003-046',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_6',
+    uploadDate: '2024-11-12T11:40:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-13T09:20:00Z',
+    description: 'Operator rates need revision based on market changes',
+    version: 'v2.6'
+  },
+  {
+    id: 'CP003-047',
+    category: Category.PRICING_CATALOGUE,
+    fileType: 'Heavy Equipment Rental',
+    fileName: 'CP-003_Cost_Structure_Mining_Heavy_Equipment_Revision_7',
+    uploadDate: '2024-11-28T16:50:00Z',
+    status: 'revision_required',
+    uploaderName: 'Admin CMT',
+    approverName: 'CMT Reviewer',
+    approvedDate: '2024-11-29T12:10:00Z',
+    description: 'Insurance rates need update for 2025 policy changes',
+    version: 'v2.7'
   },
   {
     id: 'CP003-001',
@@ -1967,7 +2058,7 @@ const getSampleDocuments = (): Document[] => [
     contractId: 'C-2024-001',
     status: 'approved',
     reviewedBy: 'CMT Admin',
-    reviewedDate: '2024-01-16T09:00:00Z',
+    reviewedDate: '2025-11-30T09:00:00Z',
     metadata: {
       contractRequestId: 'CRQ-2024-001',
       contractType: 'Service Contract',
@@ -1987,7 +2078,7 @@ const getSampleDocuments = (): Document[] => [
     uploadDate: '2024-01-20T14:15:00Z',
     status: 'approved',
     reviewedBy: 'CMT Admin',
-    reviewedDate: '2024-01-21T10:30:00Z',
+    reviewedDate: '2025-11-21T10:30:00Z',
     metadata: {
       procedureNumber: 'SP-2024-001',
       procedureType: 'Standard Operating Procedure',

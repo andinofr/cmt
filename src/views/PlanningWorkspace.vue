@@ -357,7 +357,7 @@
             <!-- Google Forms iframe -->
             <div class="w-full h-[700px]">
               <iframe
-                src="https://docs.google.com/forms/d/e/1FAIpQLSfQVBK_cUWDJMdxpSvQaNksgVuDP-t83KOF7bah87-KiArCQQ/viewform"
+                src="https://andinofr.github.io/cmt/"
                 width="100%"
                 height="100%"
                 frameborder="0"
@@ -582,11 +582,13 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-2 mt-3">
-                      <Button size="sm" variant="primary" @click="handleApproveDocument(doc.id)">✓ Approve</Button>
-                      <Button size="sm" variant="destructive" @click="openReviseNoteModal(doc)">✗ Revise</Button>
                       <Button size="sm" variant="default" @click="handleDownload(doc.fileName || 'document')">
                         <Download class="w-4 h-4" />
                         Download
+                      </Button>
+                      <Button @click="uploadModalOpen = true" variant="primary">
+                        <UploadIcon class="w-4 h-4" />
+                        Upload Document
                       </Button>
                     </div>
                   </div>
