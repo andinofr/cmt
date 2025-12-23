@@ -46,7 +46,7 @@
         <!-- File Type -->
         <div class="grid grid-cols-12 gap-4 items-start">
           <div class="col-span-4">
-            <Label for="file_type" className="text-sm font-medium text-gray-900">File Type</Label>
+            <Label for="file_type" className="text-sm font-medium text-gray-900">Document Type</Label>
           </div>
           <div class="col-span-8">
             <Select v-model="filetype" width="w-full">
