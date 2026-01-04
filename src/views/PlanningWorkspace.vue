@@ -356,7 +356,7 @@
           <div class="bg-white rounded-lg shadow-lg p-6">
             <!-- Google Forms iframe -->
             <div class="w-full h-[700px]">
-              <iframe
+              <!-- <iframe
                 src="https://app.powerbi.com/links/Hp3kb-odkW?ctid=7893571b-6c2c-4cef-b4da-7d4b266a0626&pbi_source=linkShare"
                 width="100%"
                 height="100%"
@@ -365,7 +365,14 @@
                 marginwidth="0"
                 title="Contract Request Form">
                 Loading...
-              </iframe>
+              </iframe> -->
+              <iframe
+                title="Contract Planning Master Monitoring"
+                width="100%"
+                height="100%"
+                src="https://app.powerbi.com/reportEmbed?reportId=598eb72d-200c-4a6e-87bd-677685e4c66f&autoAuth=true&ctid=7893571b-6c2c-4cef-b4da-7d4b266a0626"
+                frameborder="0"
+                allowFullScreen="true"></iframe>
             </div>
           </div>
         </TabsContent>
